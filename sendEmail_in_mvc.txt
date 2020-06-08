@@ -1,0 +1,96 @@
+
+
+                                  Controller Function
+
+        public ActionResult Send()
+        {
+            return View();
+
+        }
+
+        [HttpPost]
+
+        public ActionResult Send(gmail model)
+        {
+
+
+            MailMessage m = new MailMessage("nomanazmat96@gmail.com", model.to);
+
+            m.Subject = model.subject;
+            m.Body = model.body;
+            m.IsBodyHtml = false;
+
+
+            SmtpClient sm = new SmtpClient();
+            sm.Host = "smtp.gmail.com";
+            sm.Port = 587;
+            sm.EnableSsl = true;
+
+
+            NetworkCredential nc = new NetworkCredential("nomanazmat96@gmail.com","passsword");
+            sm.UseDefaultCredentials = true;
+            sm.Credentials = nc;
+            sm.Send(m);
+            ViewBag.message = "Send Successsfully";
+
+
+            return View();
+
+        }
+
+
+
+ 
+                                                Model
+
+        public string to { get; set; }
+        public string from { get; set; }
+        public string subject { get; set; }
+        public string body { get; set; }
+
+
+ 
+
+                                             View Page
+
+
+@using (Html.BeginForm("Send", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+    <table>
+        <tr>
+            <td>To</td>
+            <td>@Html.TextBoxFor(model=>model.to)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Subject
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.subject)
+        </td>
+        </tr>
+
+        <tr>
+            <td>Body</td>
+            <td>
+                @Html.TextAreaFor(model => model.body)
+        </td>
+        </tr>
+
+        <tr>
+            <td><input type="submit" value="sens" /></td>
+        </tr>
+    </table>
+}
+
+
+
+
+
+
+
+
